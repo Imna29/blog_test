@@ -3,13 +3,14 @@ import Link from "next/link"; // Import Link component
 import { getBlog } from "@/sanity/sanity-utils";
 import { PortableText } from "next-sanity";
 
-interface BlogProps {
-    params: { blog: string };
-}
 
-export default async function Blog({ params }: BlogProps) {
-    const { blog } = params;
-    const blogDetails = await getBlog(blog);
+
+
+type BlogParams = Promise<{blog:string}>
+
+export default async function Blog(props:{params:BlogParams}) {
+    const params = await props.params;
+    const blogDetails = await getBlog(params.blog);
 
     if (!blogDetails) {
         return (
